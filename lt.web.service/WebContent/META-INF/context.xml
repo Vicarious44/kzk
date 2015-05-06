@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<Context>
+	<Resource name="jdbc/database" type="javax.sql.DataSource"
+		driverClassName="org.sqlite.JDBC" ulr="jdbc:sqlite:C:\sqlite\database" />
+</Context>

@@ -12,10 +12,16 @@ public class UserDaoDbImpl implements UserDao{
 	private static final String USER_GET_ALL_SQL = "select username, pswhash from Users";
 	private static final String USER_GET_SQL = "SELECT username, pswhash FROM Users WHERE username = ?";
 	private static final String USER_CREATE_SQL = "insert into Users (username, pswhash) values (?, ?)";
+	private static final String USER_UPDATE_SQL = "UPDATE Users SET pswhash='?' WHERE username = ?";
 
 	@Override
 	public User createUser(User user) throws DaoException {
 		return SqlExecutor.executePreparedStatement(this::createUserFunction, USER_CREATE_SQL, user);
+	}
+	
+	@Override
+	public User updateUser(User user) throws DaoException{
+		return SqlExecutor.executePreparedStatement(this::updateUserFunction, USER_UPDATE_SQL, user);
 	}
 
 	@Override
@@ -74,11 +80,6 @@ public class UserDaoDbImpl implements UserDao{
 			statement.setString(1, user.getUsername());
 			statement.setString(2, user.getPswhash());
 			statement.executeUpdate();
-
-			/*ResultSet rs = statement.getGeneratedKeys();
-			if (rs.next()) {
-				user.setId(rs.getLong(1));
-			}*/
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new DaoException(lt.web.service.dao.DaoException.Type.ERROR, e.getMessage());
@@ -86,7 +87,18 @@ public class UserDaoDbImpl implements UserDao{
 
 		return user;
 	}
-
+	
+	private User updateUserFunction(PreparedStatement statement, User user) throws DaoException{
+		try{
+			statement.setString(1, user.getPswhash());
+			statement.setString(2, user.getUsername());
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DaoException(lt.web.service.dao.DaoException.Type.ERROR, e.getMessage());
+		}
+		return user;
+	}
 	private Long countUsersFunction(Statement statement) throws DaoException {
 		try {
 			if (statement.execute(USER_COUNT_SQL)) {

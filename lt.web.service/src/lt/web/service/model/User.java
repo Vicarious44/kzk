@@ -1,4 +1,4 @@
-package lt.web.service.dao;
+package lt.web.service.model;
 
 //import java.io.Serializable;
 
@@ -9,7 +9,7 @@ public class User {
 	String username;
 	String pswhash;
 
-	User(String x, String y) {
+	public User(String x, String y) {
 		this.username = x;
 		this.pswhash = y;
 	}

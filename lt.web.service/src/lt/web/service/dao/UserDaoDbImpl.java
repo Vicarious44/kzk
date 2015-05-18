@@ -6,13 +6,15 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import lt.web.service.model.User;
+
 public class UserDaoDbImpl implements UserDao{
 	
 	private static final String USER_COUNT_SQL = "select count(*) from Users";
 	private static final String USER_GET_ALL_SQL = "select username, pswhash from Users";
 	private static final String USER_GET_SQL = "SELECT username, pswhash FROM Users WHERE username = ?";
 	private static final String USER_CREATE_SQL = "insert into Users (username, pswhash) values (?, ?)";
-	private static final String USER_UPDATE_SQL = "UPDATE Users SET pswhash='?' WHERE username = ?";
+	private static final String USER_UPDATE_SQL = "UPDATE Users SET pswhash = ? WHERE username = ?";
 
 	@Override
 	public User createUser(User user) throws DaoException {

@@ -2,6 +2,8 @@ package lt.web.service.dao;
 
 import java.util.List;
 
+import lt.web.service.model.User;
+
 public interface UserDao {
 	User createUser(User user) throws DaoException;
 	User updateUser(User user) throws DaoException;

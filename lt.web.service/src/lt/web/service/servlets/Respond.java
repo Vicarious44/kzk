@@ -6,9 +6,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.Produces;
 
-import lt.web.service.dao.ResponseFilter;
-
-
 @Path("/respond")
 public class Respond extends HttpServlet {
 	/**
@@ -31,7 +28,7 @@ public class Respond extends HttpServlet {
 
 	// This method is called if HTML is request
 	@GET
-	@ResponseFilter
+	//@ResponseFilter
 	@Produces(MediaType.TEXT_HTML)
 	public String sayHtmlHello() {
 		return "<html> " + "<title>" + "Yep" + "</title>" + "<body><h1>"

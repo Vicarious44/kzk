@@ -9,6 +9,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.SecurityContext;
+
 import java.util.List;
 
 import javax.ws.rs.PathParam;
@@ -17,10 +19,13 @@ import lt.web.service.dao.DaoFactory.PersistanceType;
 import lt.web.service.filter.Authorization;
 import lt.web.service.model.User;
 
+
+
 @Path("/users")
 public class UserResource {
 	
 	@Context ContainerRequestContext ctx;
+	@Context SecurityContext sctx;
 	
 	private UserDao userdao;
 	private Authorization auth;
@@ -41,7 +46,7 @@ public class UserResource {
 	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public User getUser(@PathParam("id") String username) {
-		if(!auth.authorized(ctx, username)){ // gali prieiti tik prie saves
+		if(!auth.authorized(ctx, username)||!auth.isSecure(sctx)){ // gali prieiti tik prie saves
 			return null;// pakeisti i errora koki nors
 		}
 		return userdao.getUser(username);
@@ -58,7 +63,7 @@ public class UserResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public User updateUser(User user) {
-		if(!auth.authorized(ctx, user.getUsername())){ // gali updatint tik savo profili
+		if(!auth.authorized(ctx, user.getUsername())||!auth.isSecure(sctx)){ // gali updatint tik savo profili
 			return null;// pakeisti i errora koki nors
 		}
 		return userdao.updateUser(user);

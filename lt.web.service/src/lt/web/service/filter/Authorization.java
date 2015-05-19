@@ -3,6 +3,7 @@ package lt.web.service.filter;
 import java.util.StringTokenizer;
 
 import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.core.SecurityContext;
 import javax.xml.bind.DatatypeConverter;
 
 import lt.web.service.dao.DaoFactory;
@@ -27,6 +28,12 @@ public class Authorization {
 	
 	public boolean isAccessGranted(String username, String targetUsername){
 		if(username.equals(targetUsername))
+			return true;
+		return false;
+	}
+	
+	public boolean isSecure(SecurityContext sctx){
+		if(sctx.isSecure())
 			return true;
 		return false;
 	}

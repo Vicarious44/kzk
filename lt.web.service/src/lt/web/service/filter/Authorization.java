@@ -52,7 +52,7 @@ public class Authorization {
 				if(this.isPasswordCorrect(username, pswd) && username.equals(param))
 					return true;
 				//	ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED).entity("Incorrect password/resource").build());
-				System.out.println(ctx.getProperty("id"));
+				//System.out.println(ctx.getProperty("id"));
 		return false;
 	}
 }

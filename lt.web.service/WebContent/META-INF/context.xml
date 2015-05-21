@@ -5,7 +5,7 @@
 			  auth="Container" 
 			  type="javax.sql.DataSource"
 			  driverClassName="org.sqlite.JDBC"
-			  url="jdbc:sqlite:C:\\sqlite\\database2"
+			  url="jdbc:sqlite:C:\\sqlite\\database3.db"
 			  >
 	</Resource>
 </Context>

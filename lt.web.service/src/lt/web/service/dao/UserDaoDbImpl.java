@@ -11,10 +11,10 @@ import lt.web.service.model.User;
 public class UserDaoDbImpl implements UserDao{
 	
 	private static final String USER_COUNT_SQL = "select count(*) from Users";
-	private static final String USER_GET_ALL_SQL = "select username, pswhash from Users";
-	private static final String USER_GET_SQL = "SELECT username, pswhash FROM Users WHERE username = ?";
-	private static final String USER_CREATE_SQL = "insert into Users (username, pswhash) values (?, ?)";
-	private static final String USER_UPDATE_SQL = "UPDATE Users SET pswhash = ? WHERE username = ?";
+	private static final String USER_GET_ALL_SQL = "select username, password from Users";
+	private static final String USER_GET_SQL = "SELECT username, password FROM Users WHERE username = ?";
+	private static final String USER_CREATE_SQL = "insert into Users (username, password) values (?, ?)";
+	private static final String USER_UPDATE_SQL = "UPDATE Users SET password = ? WHERE username = ?";
 
 	@Override
 	public User createUser(User user) throws DaoException {
@@ -61,7 +61,6 @@ public class UserDaoDbImpl implements UserDao{
 	private User getUserFunction(PreparedStatement statement, String username)
 			throws DaoException {
 		try {
-			//statement.setLong(1, id);
 			statement.setString(1, username);
 			if (statement.execute()) {
 				ResultSet rs = statement.getResultSet();

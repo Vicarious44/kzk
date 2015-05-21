@@ -16,7 +16,6 @@ import java.util.List;
 import javax.ws.rs.PathParam;
 
 import lt.web.service.dao.DaoFactory.PersistanceType;
-import lt.web.service.filter.Authorization;
 import lt.web.service.model.User;
 
 
@@ -28,27 +27,25 @@ public class UserResource {
 	@Context SecurityContext sctx;
 	
 	private UserDao userdao;
-	private Authorization auth;
 	
 	public UserResource() {
 		userdao = DaoFactory.getUserDao(PersistanceType.DB);
-		auth = new Authorization();
 	}
 	
+	//bus istrintas
 	@GET
 	@Path("count")
 	@Produces(MediaType.TEXT_PLAIN)
-	public Long getUserCount() { // bus istrintas visai
+	public Long getUserCount() {
 		return userdao.countUsers();
 	}
 	
+	//bus istrintas
 	@GET
 	@Path("{id}")
+	@ResponseFilter
 	@Produces(MediaType.APPLICATION_JSON)
 	public User getUser(@PathParam("id") String username) {
-		if(!auth.authorized(ctx, username)||!auth.isSecure(sctx)){ // gali prieiti tik prie saves
-			return null;// pakeisti i errora koki nors
-		}
 		return userdao.getUser(username);
 	}
 	
@@ -59,20 +56,20 @@ public class UserResource {
 		return userdao.createUser(user);
 	}
 	
+	//gali naudotis tik savininkas
 	@PUT
+	@Path("{id}")
+	@ResponseFilter
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public User updateUser(User user) {
-		if(!auth.authorized(ctx, user.getUsername())||!auth.isSecure(sctx)){ // gali updatint tik savo profili
-			return null;// pakeisti i errora koki nors
-		}
 		return userdao.updateUser(user);
 	}
 	
-	
+	//bus istrintas
 	@GET 
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<User> getUserList(){ // bus paskui istrintas visam
+	public List<User> getUserList(){
 		return userdao.getAllUsers();
 	}
 	

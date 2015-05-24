@@ -79,7 +79,7 @@ public class UserDaoDbImpl implements UserDao{
 			User user) throws DaoException {
 		try {
 			statement.setString(1, user.getUsername());
-			statement.setString(2, user.getPswhash());
+			statement.setString(2, user.getPassword());
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -91,7 +91,7 @@ public class UserDaoDbImpl implements UserDao{
 	
 	private User updateUserFunction(PreparedStatement statement, User user) throws DaoException{
 		try{
-			statement.setString(1, user.getPswhash());
+			statement.setString(1, user.getPassword());
 			statement.setString(2, user.getUsername());
 			statement.executeUpdate();
 		} catch (SQLException e) {

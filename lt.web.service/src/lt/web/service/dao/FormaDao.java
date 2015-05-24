@@ -5,10 +5,16 @@ import lt.web.service.model.FormaSablonas;
 import lt.web.service.model.FormaDuomenys;
 
 public interface FormaDao {
-	List<FormaSablonas> getSablonasList(int ownerID);
-	List<FormaDuomenys> getDuomenysList(int ownerID, int sablonasID);
-	FormaSablonas getSablonas(int ownerID,int sablonasID);
-	FormaDuomenys getDuomenys(int owderID,int sablonasID, int duomenysID);
-	FormaSablonas createSablonas(int ownerID);
-	FormaDuomenys createDuomenys(int ownerID, int sablonasID);
+
+	List<FormaDuomenys> getDataList(String ownerID, int sablonasID) throws DaoException;
+	FormaDuomenys createData(String ownerID, int sablonasID, FormaDuomenys duom) throws DaoException;
+	FormaDuomenys updateData(String id, int tempid, int duomid, FormaDuomenys duom) throws DaoException;
+	FormaDuomenys getData(String id, int tempid, int duomid) throws DaoException;
+	FormaDuomenys deleteData(String id, int tempid, int duomid) throws DaoException;
+
+	List<FormaSablonas> getTemplateList(String ownerID) throws DaoException;
+	FormaSablonas createTemplate(String ownerID, FormaSablonas sab) throws DaoException;
+	FormaSablonas updateTemplate(String ownerID, int tempId, FormaSablonas temp) throws DaoException;
+	FormaSablonas getTemplate(String ownerID,int sablonasID) throws DaoException;
+	FormaSablonas deleteTemplate(String ownerID, int sablonasID) throws DaoException;
 }

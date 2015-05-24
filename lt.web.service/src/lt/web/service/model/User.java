@@ -7,11 +7,11 @@ public class User {
 	//private static final long serialVersionUID = 2337304937447105145L;
 	
 	String username;
-	String pswhash;
+	String password;
 
 	public User(String x, String y) {
 		this.username = x;
-		this.pswhash = y;
+		this.password = y;
 	}
 	
 	public User(){
@@ -26,12 +26,12 @@ public class User {
 		this.username = username;
 	}
 
-	public String getPswhash() {
-		return pswhash;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setPswhash(String pswhash) {
-		this.pswhash = pswhash;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 }

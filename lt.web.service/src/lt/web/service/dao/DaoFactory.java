@@ -24,14 +24,20 @@ public class DaoFactory {
 	}
 	
 	private static final Map<PersistanceType, UserDao> userDaoMap;
+	private static final Map<PersistanceType, FormaDao> formaDaoMap;
 	
 	static {
 		userDaoMap = new HashMap<DaoFactory.PersistanceType, UserDao>();
-		//userDaoMap.put(PersistanceType.FILE, new UserDaoFileImpl());
 		userDaoMap.put(PersistanceType.DB, new UserDaoDbImpl());
+		
+		formaDaoMap = new HashMap<DaoFactory.PersistanceType, FormaDao>();
+		formaDaoMap.put(PersistanceType.DB, new FormaDaoDbImpl());
 	}
 	
 	public static final UserDao getUserDao(PersistanceType persistanceType){
 		return userDaoMap.get(persistanceType);
+	}
+	public static final FormaDao getFormaDao(PersistanceType persitanceType){
+		return formaDaoMap.get(persitanceType);
 	}
 }

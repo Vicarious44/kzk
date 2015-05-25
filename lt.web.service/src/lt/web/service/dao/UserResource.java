@@ -10,7 +10,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.SecurityContext;
 
 import java.util.List;
 
@@ -19,6 +18,7 @@ import javax.ws.rs.PathParam;
 import lt.web.service.dao.DaoFactory.PersistanceType;
 import lt.web.service.filter.AllowAllFilter;
 import lt.web.service.filter.AllowOnlyOwnerFilter;
+import lt.web.service.filter.Authorization;
 import lt.web.service.filter.SecureFilter;
 import lt.web.service.model.FormaDuomenys;
 import lt.web.service.model.FormaSablonas;
@@ -26,37 +26,39 @@ import lt.web.service.model.User;
 
 @Path("/users")
 public class UserResource {
-	
-	@Context ContainerRequestContext ctx;
-	@Context SecurityContext sctx;
-	
+		
 	private UserDao userdao;
 	private FormaDao formadao;
+	private Authorization auth;
+	
+	@Context
+	ContainerRequestContext ctx;
 	
 	public UserResource() {
 		userdao = DaoFactory.getUserDao(PersistanceType.DB);
 		formadao = DaoFactory.getFormaDao(PersistanceType.DB);
+		auth = AuthorizationFactory.getAuth();
 	}
 	
-	//bus istrintas
+	/*//bus istrintas
 	@GET
 	@Path("count")
 	@AllowAllFilter
 	@Produces(MediaType.TEXT_PLAIN)
 	public Long getUserCount() {
 		return userdao.countUsers();
-	}
+	}*/
 	
-	//bus istrintas
+	/*//bus istrintas
 	@GET 
 	@SecureFilter
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<User> getUserList(){
 		return userdao.getAllUsers();
-	}
+	}*/
 		
 	
-	//bus istrintas
+	/*//bus istrintas
 	@GET
 	@Path("{id}")
 	@SecureFilter
@@ -64,7 +66,7 @@ public class UserResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public User getUser(@PathParam("id") String username) {
 		return userdao.getUser(username);
-	}
+	}*/
 	
 	@POST
 	@SecureFilter
@@ -122,7 +124,7 @@ public class UserResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public FormaSablonas getTemplate(@PathParam("id") String id, @PathParam("tempId") int tempid){
-		return formadao.getTemplate(id, tempid);
+		return formadao.getTemplate(tempid, id);
 	}
 	
 	@DELETE
@@ -130,7 +132,6 @@ public class UserResource {
 	@SecureFilter
 	@AllowOnlyOwnerFilter
 	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
 	public FormaSablonas deleteTemplate(@PathParam("id") String id, @PathParam("tempId") int tempid){
 		return formadao.deleteTemplate(id, tempid);
 	}
@@ -142,10 +143,10 @@ public class UserResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public FormaDuomenys createDuom(@PathParam("id") String id, @PathParam("tempId") int tempid, FormaDuomenys duom){
-		return formadao.createData(id, tempid, duom);
+		return formadao.createData(auth.getUsername(ctx), tempid, duom);
 	}
 	
-	@PUT
+	/*@PUT
 	@Path("{id}/templates/{tempId}/duom/{duomId}")
 	@SecureFilter
 	@AllowAllFilter
@@ -153,7 +154,7 @@ public class UserResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public FormaDuomenys createData(@PathParam("id") String id, @PathParam("tempId") int tempid, @PathParam("duomId") int duomid, FormaDuomenys duom){
 		return formadao.updateData(id, tempid, duomid, duom);
-	}
+	}*/
 	
 	@GET
 	@Path("{id}/templates/{tempId}/duom")
@@ -161,8 +162,8 @@ public class UserResource {
 	@AllowAllFilter
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public List<FormaDuomenys> getAllData(@PathParam("id") String id, @PathParam("tampId") int tempid){
-		return formadao.getDataList(id, tempid);
+	public List<FormaDuomenys> getAllData(@PathParam("id") String id, @PathParam("tempId") int tempid){
+		return formadao.getDataList(tempid);
 	}
 	
 	@GET
@@ -172,10 +173,10 @@ public class UserResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public FormaDuomenys getData(@PathParam("id") String id, @PathParam("tempId") int tempid, @PathParam("duomId") int duomid){
-		return formadao.getData(id, tempid, duomid);
+		return formadao.getData(duomid, tempid);
 	}
 	
-	@DELETE
+	/*@DELETE
 	@Path("{id}/templates/{tempId}/duom/{duomId}")
 	@SecureFilter
 	@AllowOnlyOwnerFilter
@@ -183,6 +184,6 @@ public class UserResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public FormaDuomenys deleteData(@PathParam("id") String id, @PathParam("tempId") int tempid, @PathParam("duomId") int duomid){
 		return formadao.deleteData(id, tempid, duomid);
-	}
+	}*/
 
 }

@@ -32,10 +32,11 @@ public class AllowOnlyOwnerFilterImpl implements ContainerRequestFilter{
 		if(!auth.isPasswordCorrect(username, pswd))
 		{
 			respcont.abortWith(Response.status(Response.Status.UNAUTHORIZED).entity("Incorrect password/username").build());
-			if(!username.equals(res)){
-				respcont.abortWith(Response.status(Response.Status.UNAUTHORIZED).entity("Only owner").build());
-			}
+			
 		}
-		
+		else
+		if(!username.equals(res)){
+			respcont.abortWith(Response.status(Response.Status.UNAUTHORIZED).entity("Only owner").build());
+		}	
 	}
 }

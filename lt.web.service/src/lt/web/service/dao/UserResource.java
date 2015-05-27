@@ -163,7 +163,7 @@ public class UserResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public List<FormaDuomenys> getAllData(@PathParam("id") String id, @PathParam("tempId") int tempid){
-		return formadao.getDataList(tempid);
+		return formadao.getDataList(tempid, id);
 	}
 	
 	@GET
@@ -173,7 +173,7 @@ public class UserResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public FormaDuomenys getData(@PathParam("id") String id, @PathParam("tempId") int tempid, @PathParam("duomId") int duomid){
-		return formadao.getData(duomid, tempid);
+		return formadao.getData(duomid, tempid, id);
 	}
 	
 	/*@DELETE

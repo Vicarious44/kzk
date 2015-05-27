@@ -6,10 +6,10 @@ import lt.web.service.model.FormaDuomenys;
 
 public interface FormaDao {
 
-	List<FormaDuomenys> getDataList(int sablonasID) throws DaoException;
+	List<FormaDuomenys> getDataList(int sablonasID, String owner) throws DaoException;
 	FormaDuomenys createData(String ownerID, int sablonasID, FormaDuomenys duom) throws DaoException;
 	FormaDuomenys updateData(String id, int tempid, int duomid, FormaDuomenys duom) throws DaoException;
-	FormaDuomenys getData(int duomid, int tempid) throws DaoException;
+	FormaDuomenys getData(int duomid, int tempid, String owner) throws DaoException;
 	FormaDuomenys deleteData(String id, int tempid, int duomid) throws DaoException;
 
 	List<FormaSablonas> getTemplateList(String ownerID) throws DaoException;

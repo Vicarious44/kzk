@@ -20,14 +20,20 @@ public class FormaDaoDbImpl implements FormaDao{
 	private static final String DATA_DELETE_SQL = "DELETE FROM Data WHERE d_template_id = (SELECT t_id FROM Templates WHERE t_id = ? AND t_owner = (SELECT id FROM Users WHERE username = ?))";
 	private static final String TEMPL_UPDATE_SQL = "UPDATE Templates SET f_title=?, f_data=? WHERE t_owner=(SELECT id FROM Users WHERE username = ?) AND t_id=?";
 	private static final String DATA_CREATE_SQL = "insert into Data (d_template_id, d_owner, d_data) values (?,(SELECT id FROM Users WHERE username = ?), ?)";
-	private static final String DATA_GET_SQL = "SELECT d_id, d_template_id, username, d_data FROM Data INNER JOIN Users ON d_owner = id WHERE d_id = ? AND d_template_id = ?";
-	private static final String DATA_GET_ALL_SQL = "SELECT d_id, d_template_id, username, d_data FROM Data INNER JOIN Users ON d_owner = id WHERE d_template_id=?";
+	//private static final String DATA_GET_SQL = "SELECT d_id, d_template_id, username, d_data FROM Data INNER JOIN Users ON d_owner = id WHERE d_id = ? AND d_template_id = ?";
+	//private static final String DATA_GET_ALL_SQL = "SELECT d_id, d_template_id, username, d_data FROM Data INNER JOIN Users ON d_owner = id WHERE d_template_id=?";
+	private static final String DATA_GET_SQL = "SELECT d_id, d_template_id, username, d_data FROM Data, Templates"
+			+ " INNER JOIN Users ON d_owner = id"
+			+ " WHERE d_id = ? AND d_template_id = ? AND t_owner = (SELECT id FROM Users WHERE username = ?)";
+	private static final String DATA_GET_ALL_SQL = "SELECT d_id, d_template_id, username, d_data "
+			+ "FROM Data, Templates INNER JOIN Users ON d_owner = id"
+			+ " WHERE d_template_id=? AND t_owner = (SELECT id FROM Users WHERE username = ?)";
 	
 	@Override
-	public List<FormaDuomenys> getDataList(int sablonasID)
+	public List<FormaDuomenys> getDataList(int sablonasID, String owner)
 			throws DaoException {
 		// TODO Auto-generated method stub
-		return SqlExecutor.executePreparedStatement(this::getDataListFunction, DATA_GET_ALL_SQL, sablonasID);
+		return SqlExecutor.executePreparedStatement2(this::getDataListFunction, DATA_GET_ALL_SQL, sablonasID, owner);
 	}
 
 	@Override
@@ -44,14 +50,15 @@ public class FormaDaoDbImpl implements FormaDao{
 	}
 
 	@Override
-	public FormaDuomenys getData(int duomid, int tempid)
+	public FormaDuomenys getData(int duomid, int tempid, String owner)
 			throws DaoException {
-		return SqlExecutor.executePreparedStatement2(this::getDataFunction, DATA_GET_SQL, duomid, tempid);
+		return SqlExecutor.executePreparedStatement3(this::getDataFunction, DATA_GET_SQL, duomid, tempid, owner);
 	}
 	
-	private List<FormaDuomenys> getDataListFunction(PreparedStatement statement, int templId){
+	private List<FormaDuomenys> getDataListFunction(PreparedStatement statement, int templId, String owner){
 		try {
 			statement.setInt(1, templId);
+			statement.setString(2, owner);
 			if(statement.execute()){
 				ResultSet rs = statement.getResultSet();
 				List<FormaDuomenys> result = new ArrayList<FormaDuomenys>();
@@ -67,10 +74,11 @@ public class FormaDaoDbImpl implements FormaDao{
 		throw new DaoException(lt.web.service.dao.DaoException.Type.NO_DATA, "No data for template:"+templId);
 	}
 	
-	private FormaDuomenys getDataFunction(PreparedStatement statement, int id, int tid){
+	private FormaDuomenys getDataFunction(PreparedStatement statement, int id, int tid, String owner){
 		try {
 			statement.setInt(1, id);
 			statement.setInt(2, tid);
+			statement.setString(3, owner);
 			if(statement.execute()){
 				ResultSet rs = statement.getResultSet();
 				if(rs.next()){
